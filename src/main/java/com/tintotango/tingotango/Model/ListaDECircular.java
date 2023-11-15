@@ -122,6 +122,94 @@ public class ListaDECircular {
         }
     }
 
+    public void deleteByPosition(int position) throws KidsException {
+        if (position <= 0 || position > this.size) {
+            throw new KidsException("Fuera de rango");
+        }
+
+        if (this.size == 1) {
+            // Único nodo en la lista
+            this.head = null;
+            this.tail = null;
+        } else {
+            NodeECircular current = this.head;
+
+            for (int i = 1; i < position; i++) {
+                current = current.getNext();
+            }
+
+            if (current == this.head) {
+                // El nodo a eliminar es la cabeza
+                this.head = current.getNext();
+                this.head.setPrevious(this.tail);
+                this.tail.setNext(this.head);
+            } else if (current == this.tail) {
+                // El nodo a eliminar es la cola
+                this.tail = current.getPrevious();
+                this.tail.setNext(this.head);
+                this.head.setPrevious(this.tail);
+            } else {
+                // El nodo a eliminar está en el medio
+                NodeECircular previous = current.getPrevious();
+                NodeECircular next = current.getNext();
+                previous.setNext(next);
+                next.setPrevious(previous);
+            }
+        }
+
+        this.size--;
+    }
+
+    public void moveKidToPosition(int currentPosition, int newPosition) throws KidsException {
+        if (this.head == null) {
+            throw new KidsException("Lista vacía");
+        }
+
+        int actualPos = currentPosition % this.size;
+        int newPos = newPosition % this.size;
+
+        NodeECircular kidNode = getNodeByPosition(actualPos);
+
+        if (kidNode == null) {
+            throw new KidsException("Niño no encontrado en la posición actual");
+        }
+
+        deleteByPosition(actualPos);
+
+        if (newPosition == 1) {
+            addToStart(kidNode.getData());
+        } else if (newPosition == this.size + 1) {
+            addKidToEnd(kidNode.getData());
+        } else {
+            insertInPosition(newPosition,kidNode.getData());
+        }
+    }
+
+    private NodeECircular getNodeByPosition(int position) throws KidsException {
+        if (this.head == null) {
+            throw new KidsException("Lista vacía");
+        }
+
+        if (position < 1 || position > this.size) {
+            throw new KidsException("Posición inválida");
+        }
+
+        NodeECircular current = this.head;
+
+        for (int i = 1; i < position; i++) {
+            current = current.getNext();
+        }
+
+        return current;
+    }
+
+
+
+
+
+
+
+
 
 
 

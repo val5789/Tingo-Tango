@@ -56,6 +56,23 @@ public class ListaDECircularController {
                 listaDECircularService.deleteById(id),null),HttpStatus.OK);
     }
 
+    @DeleteMapping(path="/deletebyposition/{position}")
+    public ResponseEntity<ResponseDTO> deleteByPosition( @PathVariable int position) throws KidsException {
+        return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                listaDECircularService.deleteByPosition(position),null),HttpStatus.OK);
+    }
+
+    @PutMapping("/move")
+    public ResponseEntity<String> moveKidToPosition(@RequestParam("currentPos") int currentPos,
+                                          @RequestParam("newPos") int newPos) {
+        try {
+            listaDECircularService.moveKidToPosition(currentPos, newPos);
+            return ResponseEntity.ok("Niño movido exitosamente");
+        } catch (KidsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 
 
 

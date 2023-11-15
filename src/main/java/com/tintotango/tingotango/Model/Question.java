@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class Preguntas {
+public class Question {
     private String question;
     private String poscorrecta;
     private List<String>  opciones;

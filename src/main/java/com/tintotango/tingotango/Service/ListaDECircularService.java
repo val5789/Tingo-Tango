@@ -48,6 +48,16 @@ public class ListaDECircularService {
         return "Eliminado";
     }
 
+    public String deleteByPosition(int position) throws KidsException {
+        kids.deleteByPosition(position);
+        return "Eliminado";
+    }
+
+    public String moveKidToPosition(int currentPosition, int newPosition) throws KidsException {
+        kids.moveKidToPosition(currentPosition,newPosition);
+        return "Movido";
+    }
+
 
 
 
