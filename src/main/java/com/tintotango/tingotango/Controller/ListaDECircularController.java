@@ -44,18 +44,19 @@ public class ListaDECircularController {
                 listaDECircularService.addKidToStart(kid),null),HttpStatus.OK);
     }
 
-    @PutMapping(path = "/movetoposition/{currentPosition}/{newPosition}/{id}")
-    public ResponseEntity<ResponseDTO> moveKidToPosition(@PathVariable int currentPosition,
-                                                         @PathVariable int newPosition, @PathVariable Kid id){
-        try{
-            return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
-                    listaDECircularService.moveKidToPosition(currentPosition,newPosition,id),null),HttpStatus.OK);
-        }catch (KidsException e){
-            List<String> errors =new ArrayList<>();
-            errors.add(e.getMessage());
-            return new ResponseEntity<>(new ResponseDTO(HttpStatus.BAD_REQUEST.value(), null,errors),HttpStatus.OK);
-        }
+    @PostMapping(path = "/insertinpos/{position}")
+    public ResponseEntity<ResponseDTO> insertInPosition(@PathVariable int position, @RequestBody Kid kid){
+        return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                listaDECircularService.insertInPosition(position,kid),null),HttpStatus.OK);
     }
+
+    @DeleteMapping(path="/deletebyid/{id}")
+    public ResponseEntity<ResponseDTO> deleteById( @PathVariable String id) throws KidsException {
+        return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                listaDECircularService.deleteById(id),null),HttpStatus.OK);
+    }
+
+
 
 
 

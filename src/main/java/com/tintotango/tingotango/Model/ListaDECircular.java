@@ -66,87 +66,67 @@ public class ListaDECircular {
         this.size++;
     }
 
+    public void insertInPosition (int position, Kid kid) {
+        if (position == 1) {
+            this.addToStart(kid);
 
-    public void moveKidToPosition(int currentPosition, int newPosition, Kid id) throws KidsException {
-        //SI LA NUEVA POSICION VA A SER LA CABEZA
-        if (newPosition < 1 || newPosition > this.size + 1) {
-            throw new KidsException("Posición inválida para insertar");
-        }
-         else if (newPosition==1){
-            this.addToStart(id);
-        }
+        } else if (position > this.size) {
+            this.addKidToEnd(kid);
 
-        //SI LA NUEVA POSICION ES EL FINAL DE LA LISTA
-        else if (newPosition == this.size){
-            this.addKidToEnd(id);
-        }
-        else if (newPosition % this.size ==0){
-            //Si el residuo entre la division de la nueva posicion y el tamaño de la lista es igual a 0
-            //significa que no va a cambiar de posicion.
-
-            newPosition=currentPosition;
-
-
-        }else if (newPosition % this.size !=0 ){
-            //Si el residuo entre la division de la nueva posicion y el tamalo de la lista
-            //es diferente a 0, se mueve la cantidad necesaria
-
-            //ELIMINAR AL NIÑO DE LA POSICION ACTUAL
-
-            int remainder = newPosition % this.size;
-
-            removeKidAtPosition(currentPosition);
-
-            // Insertar el niño en la nueva posición
-            for (int i = 0; i < remainder; i++) {
-                insertKidAtPosition(currentPosition, id);
+        } else if (position <= this.size) {
+            NodeECircular temp = this.head;
+            int posAct = 1;
+            while (posAct < position - 1) {
+                temp = temp.getNext();
+                posAct++;
             }
-
+            NodeECircular newNode = new NodeECircular(kid);
+            temp.getNext().setPrevious(newNode);
+            newNode.setNext(temp.getNext());
+            newNode.setPrevious(temp);
+            temp.setNext(newNode);
+            this.size++;
         }
-
-
-
 
     }
 
-    private void removeKidAtPosition(int position) throws KidsException {
-
-        //System.out.println("Eliminando niño en la posición " + position);
-
-        NodeECircular current = this.head;
-        for (int i = 1; i < position; i++) {
-            current = current.getNext();
+    public void deleteById(String id) throws KidsException {
+        if (this.head == null) {
+            throw new KidsException("Lista vacía");
+        } else if (this.head.getData().getId().equals(id)) {
+            // El nodo a eliminar es la cabeza
+            if (this.size == 1) {
+                // Único nodo en la lista
+                this.head = null;
+                this.tail = null;
+            } else {
+                // Hay más de un nodo en la lista
+                this.head = this.head.getNext();
+                this.head.setPrevious(this.tail);
+                this.tail.setNext(this.head);
+            }
+            this.size--;
+        } else {
+            NodeECircular temp = this.head.getNext();
+            while (temp != this.head) {
+                if (temp.getData().getId().equals(id)) {
+                    NodeECircular previous = temp.getPrevious();
+                    NodeECircular next = temp.getNext();
+                    previous.setNext(next);
+                    next.setPrevious(previous);
+                    this.size--;
+                    break;
+                }
+                temp = temp.getNext();
+            }
         }
-
-        // Enlazar el nodo anterior y siguiente para omitir el nodo actual
-        current.getPrevious().setNext(current.getNext());
-        current.getNext().setPrevious(current.getPrevious());
-
-        this.size--;
-
-        //System.out.println("Niño eliminado. Lista después de eliminar: " + this.getAllKids());
     }
 
-    private void insertKidAtPosition(int position, Kid id) throws KidsException {
-        NodeECircular newNode = new NodeECircular(id);
-        NodeECircular current = this.head;
-
-        for (int i = 1; i < position - 1; i++) {
-            current = current.getNext();
-        }
-
-        // Insertar en la posición indicada
-        newNode.setNext(current.getNext());
-        newNode.setPrevious(current);
-        current.getNext().setPrevious(newNode);
-        current.setNext(newNode);
 
 
 
 
-        this.size++;
 
-    }
 
 
 

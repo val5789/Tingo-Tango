@@ -38,9 +38,14 @@ public class ListaDECircularService {
         return "Adicionado";
     }
 
-    public String moveKidToPosition(int currentPosition, int newPosition, Kid id) throws KidsException {
-        kids.moveKidToPosition(currentPosition,newPosition,id);
-        return "Movido";
+    public String insertInPosition(int position, Kid kid){
+        kids.insertInPosition(position,kid);
+        return "Insertado";
+    }
+
+    public String deleteById(String id) throws KidsException {
+        kids.deleteById(id);
+        return "Eliminado";
     }
 
 
