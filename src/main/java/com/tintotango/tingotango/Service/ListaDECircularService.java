@@ -38,8 +38,8 @@ public class ListaDECircularService {
         return "Adicionado";
     }
 
-    public String moveKidToPosition(int currentPosition, int newPosition, Kid kid) throws KidsException {
-        kids.moveKidToPosition(currentPosition,newPosition,kid);
+    public String moveKidToPosition(int currentPosition, int newPosition, Kid id) throws KidsException {
+        kids.moveKidToPosition(currentPosition,newPosition,id);
         return "Movido";
     }
 

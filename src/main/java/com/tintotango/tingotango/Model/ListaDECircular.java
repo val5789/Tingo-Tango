@@ -67,32 +67,51 @@ public class ListaDECircular {
     }
 
 
-    public void moveKidToPosition(int currentPosition, int newPosition, Kid kid) throws KidsException {
+    public void moveKidToPosition(int currentPosition, int newPosition, Kid id) throws KidsException {
         //SI LA NUEVA POSICION VA A SER LA CABEZA
-        if (newPosition==1){
-            this.addToStart(kid);
+        if (newPosition < 1 || newPosition > this.size + 1) {
+            throw new KidsException("Posición inválida para insertar");
+        }
+         else if (newPosition==1){
+            this.addToStart(id);
         }
 
         //SI LA NUEVA POSICION ES EL FINAL DE LA LISTA
         else if (newPosition == this.size){
-            this.addKidToEnd(kid);
+            this.addKidToEnd(id);
+        }
+        else if (newPosition % this.size ==0){
+            //Si el residuo entre la division de la nueva posicion y el tamaño de la lista es igual a 0
+            //significa que no va a cambiar de posicion.
+
+            newPosition=currentPosition;
+
+
+        }else if (newPosition % this.size !=0 ){
+            //Si el residuo entre la division de la nueva posicion y el tamalo de la lista
+            //es diferente a 0, se mueve la cantidad necesaria
+
+            //ELIMINAR AL NIÑO DE LA POSICION ACTUAL
+
+            int remainder = newPosition % this.size;
+
+            removeKidAtPosition(currentPosition);
+
+            // Insertar el niño en la nueva posición
+            for (int i = 0; i < remainder; i++) {
+                insertKidAtPosition(currentPosition, id);
+            }
+
         }
 
-        //ELIMINAR EL NIÑO DE LA POSICION ACTUAL
 
-        removeKidAtPosition(currentPosition);
-
-        //INSERTAR EL NIÑO EN LA NUEVA POSICION
-
-        insertKidAtPosition(newPosition, kid);
 
 
     }
 
     private void removeKidAtPosition(int position) throws KidsException {
-        if (position < 1 || position > this.size) {
-            throw new KidsException("Posición inválida para eliminar");
-        }
+
+        //System.out.println("Eliminando niño en la posición " + position);
 
         NodeECircular current = this.head;
         for (int i = 1; i < position; i++) {
@@ -104,41 +123,35 @@ public class ListaDECircular {
         current.getNext().setPrevious(current.getPrevious());
 
         this.size--;
+
+        //System.out.println("Niño eliminado. Lista después de eliminar: " + this.getAllKids());
     }
 
-    private void insertKidAtPosition(int position, Kid kid) throws KidsException {
-        if (position < 1 || position > this.size + 1) {
-            throw new KidsException("Posición inválida para insertar");
+    private void insertKidAtPosition(int position, Kid id) throws KidsException {
+        NodeECircular newNode = new NodeECircular(id);
+        NodeECircular current = this.head;
+
+        for (int i = 1; i < position - 1; i++) {
+            current = current.getNext();
         }
 
-        NodeECircular newNode = new NodeECircular(kid);
-        if (position == 1) {
-            // Insertar al inicio
-            newNode.setNext(this.head);
-            newNode.setPrevious(this.tail);
-            this.head.setPrevious(newNode);
-            this.tail.setNext(newNode);
-            this.head = newNode;
-        } else {
-            NodeECircular current = this.head;
-            for (int i = 1; i < position - 1; i++) {
-                current = current.getNext();
-            }
+        // Insertar en la posición indicada
+        newNode.setNext(current.getNext());
+        newNode.setPrevious(current);
+        current.getNext().setPrevious(newNode);
+        current.setNext(newNode);
 
-            // Insertar en la posición indicada
-            newNode.setNext(current.getNext());
-            newNode.setPrevious(current);
-            current.getNext().setPrevious(newNode);
-            current.setNext(newNode);
 
-            if (position == this.size + 1) {
-                // Actualizar la cola si se inserta al final
-                this.tail = newNode;
-            }
-        }
+
 
         this.size++;
+
     }
+
+
+
+
+
 
 
 

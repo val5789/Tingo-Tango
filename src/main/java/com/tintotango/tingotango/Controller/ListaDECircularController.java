@@ -44,6 +44,19 @@ public class ListaDECircularController {
                 listaDECircularService.addKidToStart(kid),null),HttpStatus.OK);
     }
 
+    @PutMapping(path = "/movetoposition/{currentPosition}/{newPosition}/{id}")
+    public ResponseEntity<ResponseDTO> moveKidToPosition(@PathVariable int currentPosition,
+                                                         @PathVariable int newPosition, @PathVariable Kid id){
+        try{
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                    listaDECircularService.moveKidToPosition(currentPosition,newPosition,id),null),HttpStatus.OK);
+        }catch (KidsException e){
+            List<String> errors =new ArrayList<>();
+            errors.add(e.getMessage());
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.BAD_REQUEST.value(), null,errors),HttpStatus.OK);
+        }
+    }
+
 
 
 }
