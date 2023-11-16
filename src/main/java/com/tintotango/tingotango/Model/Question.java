@@ -10,9 +10,10 @@ import java.util.List;
 @AllArgsConstructor
 public class Question {
     private String question;
-    private String idpregunta;
-    private byte poscorrecta;
     private List<String>  opciones;
+    private byte poscorrecta;
+    private String idpregunta;
+
 
     public Question(String questionText, ArrayList<String> strings, Byte correctPos) {
     }

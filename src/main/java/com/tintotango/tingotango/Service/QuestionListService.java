@@ -35,7 +35,7 @@ public class QuestionListService {
                // Question question = new Question(questionText, new ArrayList<>(List.of(options)), correctPos);
 
 
-                Question question = new Question(questionText, Arrays.asList(options).toString(), correctpos, Collections.singletonList(id));
+                Question question = new Question(questionText, Arrays.asList(options), correctpos, id);
                 questions.addQuestion(question);
             }
         } catch (IOException e) {

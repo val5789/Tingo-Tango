@@ -100,19 +100,20 @@ public class TingoTangoService {
         }
     }
 
-  //  public String moveKid (int currentPosition, int newPosition) throws KidsException{
-    //    if (game.getAwaitingKid()==null || !currentPosition.equals(game.getAwaitingKid().getId())) {
-      //      try {
-        //        listDEService.moveKidToPosition(currentPosition,newPosition);
-          //      return "Niño movido";
-           // } catch (KidsException e) {
-             //   throw new KidsException(e.getMessage());
-            //}
-        //} else {
+    public String moveKid(int pos, String kidId) throws KidsException {
+        if (game.getAwaitingKid() == null || !kidId.equals(game.getAwaitingKid().getId())) {
+            try {
+                listDEService.moveKidToPosition(pos, pos + 1); // Sumar 1 para ajustar la posición
+                return "Niño movido";
+            } catch (KidsException e) {
+                throw new KidsException(e.getMessage());
+            }
+        } else {
+            throw new KidsException("No se puede mover puesto que no se ha respondido");
+        }
+    }
 
-          //  throw new KidsException("No se puede mover puesto que no se ha respondido");
-        //}
-    //}
+
 
     public DataStructureDTO roleGame() throws KidsException{
         if(game.getAwaitingKid()==null) {
@@ -132,8 +133,8 @@ public class TingoTangoService {
                 actualKidPosition--;
             }
             Question question = questionService.getAll().get(actualQuestionPos);
-            Question newQuestion = new Question(question.getQuestion(),question.getIdpregunta(),
-                    question.getPoscorrecta(), question.getOpciones());
+            Question newQuestion = new Question(question.getQuestion(),question.getOpciones(),
+                    question.getPoscorrecta(), question.getIdpregunta());
 
             game.setAnswerState(true);
             game.setAwaitingKid(temp.getData());
