@@ -64,17 +64,16 @@ public class QuestionListService {
             throw new KidsException(e.getMessage());
         }
     }
-
     public List<Question> getAll(){
         return questions.getAll();
     }
-
     public Question getQuestionById(String questionId) throws KidsException{
         try {
             return questions.getQuestionById(questionId);
         } catch (KidsException e) {
             throw new KidsException(e.getMessage());
         }
+
     }
 
 

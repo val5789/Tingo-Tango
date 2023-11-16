@@ -28,8 +28,8 @@ public class TingoTangoService {
                 null,null,null);
     }
 
-    public String addNewQuestion (Question newQuestion){
-        questionService.addNewQuestion(newQuestion);
+    public String addQuestion (Question newquest){
+        questionService.addNewQuestion(newquest);
         return "Pregunta adicionada";
     }
 
@@ -70,11 +70,11 @@ public class TingoTangoService {
         }
     }
 
-    public String addKidToEnd (Kid kid){
+    public String addKidToEnd (Kid kid)throws KidsException{
         return listDEService.addKidToEnd(kid);
     }
 
-    public String addToStart (Kid kid){
+    public String addToStart (Kid kid)throws KidsException{
         return listDEService.addKidToStart(kid);
     }
 
@@ -115,7 +115,7 @@ public class TingoTangoService {
 
 
 
-    public DataStructureDTO roleGame() throws KidsException{
+    public DataStructureDTO roleGame(String direction) throws KidsException{
         if(game.getAwaitingKid()==null) {
             Random rand = new Random();
             int randomPosition = rand.nextInt(2000);
@@ -133,8 +133,8 @@ public class TingoTangoService {
                 actualKidPosition--;
             }
             Question question = questionService.getAll().get(actualQuestionPos);
-            Question newQuestion = new Question(question.getQuestion(),question.getOpciones(),
-                    question.getPoscorrecta(), question.getIdpregunta());
+            Question newQuestion = new Question(question.getQuestion(),question.getOptions(),
+                    question.getCorrectPos(), question.getId());
 
             game.setAnswerState(true);
             game.setAwaitingKid(temp.getData());
@@ -156,9 +156,9 @@ public class TingoTangoService {
     public String answerQuestion(DataStructureDTO response)throws KidsException{
         if(response.getKidData().getId().equals(game.getAwaitingQuestion().getKidData().getId())){
 
-            Question question = questionService.getQuestionById(response.getQuestionData().getIdpregunta());
+            Question question = questionService.getQuestionById(response.getQuestionData().getId());
 
-            if(question.getQuestion().equals(response.getQuestionData().getPoscorrecta())){
+            if(question.getQuestion().equals(response.getQuestionData().getCorrectPos())){
                 game.setAnswerState(false);
                 game.setAwaitingKid(null);
                 return "Respuesta correcta, continua"+ game.getAwaitingQuestion().getKidData().getName();

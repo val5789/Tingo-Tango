@@ -63,8 +63,8 @@ public class QuestionListController {
         }
     }
     @PostMapping(path = "/addquestion")
-    public ResponseEntity<ResponseDTO> addQuestion(@RequestBody Question newquest){
-        return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(), questionListService.addNewQuestion(newquest),null),HttpStatus.OK);
+    public ResponseEntity<ResponseDTO> addQuestion(@RequestBody Question newQuestion){
+        return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(), questionListService.addNewQuestion(newQuestion),null),HttpStatus.OK);
     }
 
 }

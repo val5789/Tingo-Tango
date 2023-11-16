@@ -166,23 +166,23 @@ public class ListaDECircular {
             throw new KidsException("Lista vacía");
         }
 
-        int actualPos = currentPosition % this.size;
-        int newPos = newPosition % this.size;
+       // int actualPos = currentPosition % this.size;
+       // int newPos = newPositiothis.size;
 
-        NodeECircular kidNode = getNodeByPosition(actualPos);
+        NodeECircular kidNode = getNodeByPosition(currentPosition);
 
        // if (kidNode == null) {
          //   throw new KidsException("Niño no encontrado en la posición actual");
         //
 
-        deleteByPosition(actualPos);
+        deleteByPosition(currentPosition);
 
-        if (newPos == 1) {
+        if (newPosition == 1) {
             addToStart(kidNode.getData());
-        } else if (newPos == this.size  ) {
-            insertInPosition(newPos,kidNode.getData());
+        } else if (newPosition ==  this.size +1 ) {
+            addKidToEnd(kidNode.getData());
         } else {
-            insertInPosition(newPos,kidNode.getData());
+            insertInPosition(newPosition,kidNode.getData());
         }
     }
 

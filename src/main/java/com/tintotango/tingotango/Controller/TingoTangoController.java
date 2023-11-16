@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="game")
+@RequestMapping(path="tingotango")
 public class TingoTangoController {
     @Autowired
     private TingoTangoService tingoTangoService;
@@ -23,7 +23,7 @@ public class TingoTangoController {
     @PostMapping(path = "/addquestion")
     public ResponseEntity<ResponseDTO> addQuestion(@RequestBody Question newQuestion) {
         return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
-                tingoTangoService.addNewQuestion(newQuestion), null), HttpStatus.OK);
+                tingoTangoService.addQuestion(newQuestion), null), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/deletequestionbyid/{id}")
@@ -84,11 +84,12 @@ public class TingoTangoController {
         }
     }
 
-    @PutMapping(path = "/movekid/{pos}/{kidid}")
-    public ResponseEntity<ResponseDTO> moveKid(@PathVariable int pos, @PathVariable String kidid) {
+
+    @PostMapping(path = "/addkidtostart")
+    public ResponseEntity<ResponseDTO> addToStart(@RequestBody Kid kid) {
         try {
             return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
-                    tingoTangoService.moveKid(pos, kidid), null), HttpStatus.OK);
+                    tingoTangoService.addToStart(kid), null), HttpStatus.OK);
         } catch (KidsException e) {
             List<String> errors = new ArrayList<>();
             errors.add(e.getMessage());
@@ -97,23 +98,24 @@ public class TingoTangoController {
         }
     }
 
-    @PostMapping(path = "/addkidtostart")
-    public ResponseEntity<ResponseDTO> addToStart(@RequestBody Kid kid) {
-        return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
-                tingoTangoService.addToStart(kid), null), HttpStatus.OK);
-    }
-
     @PostMapping(path = "/addkidtoend")
-    public ResponseEntity<ResponseDTO> addToEnd(@RequestBody Kid kid) {
-        return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
-                tingoTangoService.addKidToEnd(kid), null), HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/rolegame")
-    public ResponseEntity<ResponseDTO> roleGame() {
+    public ResponseEntity<ResponseDTO> addToEnd(@RequestBody Kid kid){
         try {
             return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
-                    tingoTangoService.roleGame(), null), HttpStatus.OK);
+                    tingoTangoService.addKidToEnd(kid),null),HttpStatus.OK);
+        } catch (KidsException e) {
+            List<String> errors = new ArrayList<>();
+            errors.add(e.getMessage());
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.BAD_REQUEST.value(),
+                    null,errors),HttpStatus.OK);
+        }
+    }
+
+    @GetMapping(path = "/rolegame/{direction}")
+    public ResponseEntity<ResponseDTO> roleGame(@PathVariable String direction) {
+        try {
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                    tingoTangoService.roleGame(direction), null), HttpStatus.OK);
         } catch (KidsException e) {
             List<String> errors = new ArrayList<>();
             errors.add(e.getMessage());
@@ -128,7 +130,7 @@ public class TingoTangoController {
                 tingoTangoService.getQuestion(), null), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/answerquestion")
+    @PostMapping(path = "/answerquestion")
     public ResponseEntity<ResponseDTO> answerQuestion(@RequestBody DataStructureDTO response) {
 
         try {
@@ -154,5 +156,4 @@ public class TingoTangoController {
                     null, errors), HttpStatus.OK);
         }
     }
-
 }
