@@ -160,6 +160,7 @@ public class ListaDECircular {
         this.size--;
     }
 
+//ME FALTA ESPECIFICAR SI POR LA DERECHA O LA IZQUIERDA
     public void moveKidToPosition(int currentPosition, int newPosition) throws KidsException {
         if (this.head == null) {
             throw new KidsException("Lista vacía");
@@ -170,18 +171,18 @@ public class ListaDECircular {
 
         NodeECircular kidNode = getNodeByPosition(actualPos);
 
-        if (kidNode == null) {
-            throw new KidsException("Niño no encontrado en la posición actual");
-        }
+       // if (kidNode == null) {
+         //   throw new KidsException("Niño no encontrado en la posición actual");
+        //
 
         deleteByPosition(actualPos);
 
-        if (newPosition == 1) {
+        if (newPos == 1) {
             addToStart(kidNode.getData());
-        } else if (newPosition == this.size + 1) {
-            addKidToEnd(kidNode.getData());
+        } else if (newPos == this.size  ) {
+            insertInPosition(newPos,kidNode.getData());
         } else {
-            insertInPosition(newPosition,kidNode.getData());
+            insertInPosition(newPos,kidNode.getData());
         }
     }
 
@@ -202,6 +203,11 @@ public class ListaDECircular {
 
         return current;
     }
+
+
+
+
+
 
 
 
